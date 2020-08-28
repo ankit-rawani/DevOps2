@@ -1,0 +1,21 @@
+#!bin/bash
+
+useradd --create-home corona
+
+groupadd doc1_patients
+groupadd doc2_patients
+groupadd citizens
+
+useradd --create-home --groups doc1_patients,citizens doc1
+useradd --create-home --groups doc2_patients,citizens doc2
+
+counter=1
+
+while [ $counter -le 5 ]
+do
+    useradd --create-home --groups doc1_patients,citizens doc1_pat$counter
+    useradd --create-home --groups doc1_patients,citizens doc2_pat$counter
+done
+
+echo 'All accounts created!'
+    
