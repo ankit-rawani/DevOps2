@@ -47,4 +47,37 @@ do
 done
 
 echo "Required directories made!"
-  
+    
+# Changing the permissions of the Vaccines directories
+chmod 774 -R /home/doc1/Vaccines
+chmod 774 -R /home/doc2/Vaccines
+
+# Making vaccine files in Vaccines directories
+touch /home/doc1/{covax,sputnik,corin,coron,cona}
+touch /home/doc2/{covax,sputnik,corin,coron,cona}
+
+echo covax > /home/doc1/covax
+echo sputnik > /home/doc1/sputnik
+echo corin > /home/doc1/corin
+echo coron > /home/doc1/coron
+echo cona > /home/doc1/cona
+
+echo covax > /home/doc2/covax
+echo sputnik > /home/doc2/sputnik
+echo corin > /home/doc2/corin
+echo coron > /home/doc2/coron
+echo cona > /home/doc2/cona
+
+# Making request files
+touch /home/doc1/Requests/{p1,p2,p3,p4,p5}
+touch /home/doc2/Requests/{p1,p2,p3,p4,p5}
+
+counter=1
+
+while [ $counter -le 5 ]
+do
+    chown doc1_pat$counter /home/doc1/Requests/p$counter
+    chown doc2_pat$counter /home/doc2/Requests/p$counter
+    ((counter++))
+done
+
