@@ -1,21 +1,50 @@
 #!bin/bash
 
+# Making the default permissions for every new file/folder to be 660/770
+umask 007
+
+# Creating Virus user 'corona'
 useradd --create-home corona
 
-groupadd doc1_patients
-groupadd doc2_patients
-groupadd citizens
+# Allowing citizens to read the contents of Virus
+chmod 774 -R /home/corona
 
-useradd --create-home --groups doc1_patients,citizens doc1
-useradd --create-home --groups doc2_patients,citizens doc2
+# Creating accounts for doctors
+useradd --create-home doc1
+useradd --create-home doc2
+
+adduser corona doc1
+adduser corona doc2
+
+counter=1
+
+# Looping and creating patients and adding them to their respective groups
+while [ $counter -le 5 ]
+do
+    useradd --create-home doc1_pat$counter
+    useradd --create-home doc2_pat$counter
+
+    adduser corona doc1_pat$counter
+    adduser corona doc2_pat$counter
+    adduser doc1 doc1_pat$counter
+    adduser doc2 doc2_pat$counter
+    ((counter++))
+done
+
+echo "All accounts created!"
+
+# Making required directories
+mkdir -p /home/doc1/{Symptoms,Vaccines,Requests}
+mkdir -p /home/doc2/{Symptoms,Vaccines,Requests}
 
 counter=1
 
 while [ $counter -le 5 ]
 do
-    useradd --create-home --groups doc1_patients,citizens doc1_pat$counter
-    useradd --create-home --groups doc1_patients,citizens doc2_pat$counter
+    mkdir -p /home/doc1_pat$counter/Symptoms
+    mkdir -p /home/doc2_pat$counter/Symptoms
+    ((counter++))
 done
 
-echo 'All accounts created!'
-    
+echo "Required directories made!"
+  
